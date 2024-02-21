@@ -1,0 +1,57 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Kumbh Sans', sans-serif;
+}
+
+.options {
+    background-color: #E5BB89;
+}
+
+.options__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem;
+    height: 90vh;
+    width: 100%;
+    max-width: 1300px;
+    background-color: #E5BB89;
+}
+
+.options h1 {
+    font-size: 3rem;
+    padding: 2rem;
+    background-color: black;
+    background-image: linear-gradient(to top, black 0%, grey 100%);
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+label {
+    font-size: 2rem;
+    background-color: black;
+    padding-inline: 1rem;
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+
+select {
+    font-size: 1rem;
+    padding: 0.5rem;
+    background-color: black;
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
