@@ -51,13 +51,38 @@
         <div class="options__container">
             <div class="options__content">
                 <h1>Beam Customizer</h1>
-                <label for="material">Choose Material:</label>
-                <select name="material" id="material">
-                    <option value="none"></option>
-                    <option value="concrete">Concrete</option>
-                    <option value="steel">Steel</option>
-                    <option value="wood">Wood</option>
+                <br> 
+
+                <form>
+                    <label for="fname">Span (L) 2-12m:</label>
+                    <input type="text" id="span-length" name="span-length">
+                  </form>
+
+                <br>
+                <br>
+
+                <label for="location">Select Location:</label>
+                <select name="location" id="location">
+                    <option value="location"></option>
+                    <option value="interior">Interior (inside a building)</option>
+                    <option value="inland">Inland</option>
+                    <option value="near coastal">Near Coastal</option>
+                    <option value="coastal">Coastal</option>
                 </select>
+
+                <br>
+                <br>
+                <br>
+
+                <label for="purpose">Select Purpose:</label>
+                <select name="purpose" id="purpose">
+                    <option value="purpose"></option>
+                    <option value="residential">Residential</option>
+                    <option value="industrial">Industrial</option>
+                    <option value="commercial">Commercial</option>
+                </select>
+
+                
             </div>
         </div>
     </div>
