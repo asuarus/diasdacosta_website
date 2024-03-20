@@ -83,13 +83,14 @@
 
 .options__container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     padding: 2rem;
     height: 90vh;
     width: 100%;
     max-width: 1300px;
     background-color: #E5BB89;
 }
+
 
 .options h1 {
     font-size: 3rem;
@@ -103,10 +104,19 @@
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
 }
+
+.options h2 {
+    font-size: 2rem;
+    padding: 1rem;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    color: black;
+}
+
 label {
     font-size: 2rem;
     background-color: black;
-    padding-inline: 1rem;
+    padding-inline: 2rem;
     background-size: 100%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -126,3 +136,19 @@ select {
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
 }
+
+input {
+    height: 2.5rem;
+    font-size: 1.5rem;
+    border: thin solid black;
+}
+
+select {
+    color: white;
+    font-size: 1.25rem;
+    align-content: center;
+    text-align: center;
+    color: white;
+    border: thin solid black;
+}
+

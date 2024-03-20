@@ -52,18 +52,19 @@
             <div class="options__content">
                 <h1>Beam Customizer</h1>
                 <br> 
-
+                
+                <h2>Purpose</h2>
                 <form>
-                    <label for="fname">Span (L) 2-12m:</label>
+                    <label for="fname">Span (2-12m):</label>
                     <input type="text" id="span-length" name="span-length">
-                  </form>
+                </form>
 
                 <br>
                 <br>
 
                 <label for="location">Select Location:</label>
                 <select name="location" id="location">
-                    <option value="location"></option>
+                    <option value="location">--Please Select an Option--</option>
                     <option value="interior">Interior (inside a building)</option>
                     <option value="inland">Inland</option>
                     <option value="near coastal">Near Coastal</option>
@@ -76,12 +77,29 @@
 
                 <label for="purpose">Select Purpose:</label>
                 <select name="purpose" id="purpose">
-                    <option value="purpose"></option>
+                    <option value="purpose">--Please Select an Option--</option>
                     <option value="residential">Residential</option>
                     <option value="industrial">Industrial</option>
                     <option value="commercial">Commercial</option>
                 </select>
 
+                <h2>Steel Reinforcement Properties</h2>
+                <form>
+                    <label for="rebar-diameter">Rebar Diameter (10-24mm)</label>
+                    <input type="text" id="rebar-diameter" name="rebar-diameter">
+                </form>
+
+                <br>
+                <br>
+
+                
+                <label for="stirrup">Stirrup Size</label>
+                <select name="stirrup" id="stirrup">
+                    <option value="location">--Please Select an Option--</option>
+                    <option value=10>10mm</option>
+                    <option value=12>12mm</option>
+                </select>
+    
                 
             </div>
         </div>
