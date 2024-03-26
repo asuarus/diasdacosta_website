@@ -85,7 +85,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     padding: 2rem;
-    height: 90vh;
+    height: 100%;
     width: 100%;
     max-width: 1300px;
     background-color: #E5BB89;
@@ -141,6 +141,8 @@ input {
     height: 2.5rem;
     font-size: 1.5rem;
     border: thin solid black;
+    align-content: center;
+    text-align: center;
 }
 
 select {
