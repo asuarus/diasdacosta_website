@@ -6,23 +6,16 @@ import math from 'mathjs';
 
 
 
-const depthNumber = document.getElementById("depthNumber");
-const locationQues = document.getElementById('location');
-const purposeQues = document.getElementById('purpose');
-const rebarDiameter = document.getElementById('rebar-diameter');
-const effectiveDepth = document.getElementById('effective-depth');
-const webDepth = document.getElementById('web-depth');
-
-
 let alphaB = 0.2;
 let Fsy = 500;
+let aspectRatio = 16;
 
 //intial calculations to find Fc
 const mInteriorClassification = math.matrix(["A1", "A2", "B1"]); //Residential, Non-Residential, Industrial
 const mExteriorClassification = math.matrix(["A2", "B1", "B2"], ["B1", "B1", "B2"]); //inland, near-coastal, coastal
                                                                      //Non-Industrial
                                                                          //Industrial
-function concreteClassification() {
+function concreteClassification(locationQues, purposeQues) {
     if (locationQues === 'interior') {
 
         if (purposeQues === 'residential') {
@@ -52,8 +45,7 @@ function concreteClassification() {
     }
 }
 
-function calculateFc() {
-    let classification = concreteClassification(locationQues, purposeQues);
+function calculateFc(classification) {
     Fc = 0;
     if (classification === "A1") {
         Fc = 20;
@@ -79,13 +71,19 @@ function calculateCover(classification) {
     }
 }
 
-function calculateEffectiveDepth() {
+function calculateEffectiveDepth(depthNumber, cover, rebarDiameter) {
     let effectiveDepth = depthNumber - cover - rebarDiameter / 2;
     return effectiveDepth;
 }
 
-function calculateCrossSectionalArea() {
-    let crossSectionalArea = alphaB * (depthNumber * effectiveDepth) ** 2 (0.6 * (Fc ** 0.5)/Fsy) * webDepth * effectiveDepth;
+function calculateWebDepth(spanLength) {
+    let webDepth = spanLength / (aspectRatio);
+    return webDepth;
+}
+
+
+function calculateCrossSectionalArea(spanLength, effectiveDepth, Fc, webDepth) {
+    let crossSectionalArea = alphaB * (spanLength * effectiveDepth) ** 2 (0.6 * (Fc ** 0.5)/Fsy) * webDepth * effectiveDepth;
     return crossSectionalArea;
 }
 

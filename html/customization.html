@@ -31,7 +31,7 @@
             <ul class="navbar__menu">
 
                 <li class="navbar__item">
-                    <a href="index.html" class="navbar__links">Home</a>
+                    <a href="/index.html" class="navbar__links">Home</a>
                 </li>
 
                 <li class="navbar__item">
@@ -39,7 +39,7 @@
                 </li>
                 
                 <li class = "navbar__item">
-                    <a href="/html/description.html" class="navbar__links">How It Works</a>
+                    <a href="/html/canvas.html" class="navbar__links">How It Works</a>
                 </li>
             </ul>
         </div>
@@ -53,11 +53,16 @@
             <div class="options__content">
                 <h1>Beam Customizer</h1>
                 <br> 
+                <div class="input__content">
+                
                 
                 <h2>Purpose</h2>
                 <form>
-                    <label for="fname">Span (2-12m):</label>
-                    <input type="text" id="span-length" name="span-length">
+                    <label for="fname">Span (m):</label>
+                    <br>
+                    <input type="range" min="2" max="12" value="6" class="slider" id="span-length" oninput="this.nextElementSibling.value = this.value">
+                    <output>6</output>
+                    
                 </form>
 
                 <br>
@@ -66,7 +71,7 @@
                 <label for="location">Select Location:</label>
                 <select name="location" id="location">
                     <option value="location">--Please Select an Option--</option>
-                    <option value="interior">Interior (inside a building)</option>
+                    <option value="interior">Interior</option>
                     <option value="inland">Inland</option>
                     <option value="near coastal">Near Coastal</option>
                     <option value="coastal">Coastal</option>
@@ -78,7 +83,7 @@
 
                 <label for="purpose">Select Purpose:</label>
                 <select name="purpose" id="purpose">
-                    <option value="purpose">--Please Select an Option--</option>
+                    <option value=0>--Please Select an Option--</option>
                     <option value="residential">Residential</option>
                     <option value="industrial">Industrial</option>
                     <option value="commercial">Commercial</option>
@@ -86,22 +91,45 @@
 
                 <h2>Steel Reinforcement Properties</h2>
                 <form>
-                    <label for="rebar-diameter">Rebar Diameter (10-24mm)</label>
-                    <input type="text" id="rebar-diameter" name="rebar-diameter">
+                    <label for="rebar-diameter">Rebar Diameter (mm)</label>
+                    <select name="rebar-diameter" id="rebar-diameter">
+                        <option value=0>--Please Select an Option--</option>
+                        <option value=10>10</option>
+                        <option value=12>12</option>
+                        <option value=14>14</option>
+                        <option value=16>16</option>
+                        <option value=18>18</option>
+                        <option value=20>20</option>
+                        <option value=22>22</option>
+                        <option value=24>24</option>
+                    </select>
                 </form>
 
                 <br>
                 <br>
 
                 
-                <label for="stirrup">Stirrup Size</label>
+                <label for="stirrup">Stirrup Size (mm)</label>
                 <select name="stirrup" id="stirrup">
                     <option value="location">--Please Select an Option--</option>
-                    <option value=10>10mm</option>
-                    <option value=12>12mm</option>
+                    <option value=10>10</option>
+                    <option value=12>12</option>
                 </select>
-    
+
+                <br>
+                <br>
+                <br>
+
+                <label for="desiredFc">Compressive Strength Fc (MPa)</label>
+                <input type="text" name="desiredFc" id="desiredFc">
+
+                </div> <!-- input content -->
+
+                <div class="result__content">
+                <br> 
+                </div>
                 
+
             </div>
         </div>
     </div>
