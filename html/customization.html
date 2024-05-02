@@ -12,6 +12,8 @@
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/b1a74ee1f1.js" 
         crossorigin="anonymous"></script>
+
+        
 </head>
 <body>
 
@@ -55,13 +57,14 @@
                 <br> 
                 <div class="input__content">
                 
+                <button type="button" id="run">Run</button>
                 
                 <h2>Purpose</h2>
                 <form>
-                    <label for="fname">Span (m):</label>
+                    <label for="fname">Span (mm):</label>
                     <br>
-                    <input type="range" min="2" max="12" value="6" class="slider" id="span-length" oninput="this.nextElementSibling.value = this.value">
-                    <output>6</output>
+                    <input type="range" min="2000" max="12000" value="3000" class="slider" id="span-length" oninput="this.nextElementSibling.value = this.value">
+                    <output>3000</output>
                     
                 </form>
 
@@ -69,11 +72,11 @@
                 <br>
 
                 <label for="location">Select Location:</label>
-                <select name="location" id="location">
+                <select id="location" >
                     <option value="location">--Please Select an Option--</option>
                     <option value="interior">Interior</option>
                     <option value="inland">Inland</option>
-                    <option value="near coastal">Near Coastal</option>
+                    <option value="near-coastal">Near Coastal</option>
                     <option value="coastal">Coastal</option>
                 </select>
 
@@ -82,17 +85,17 @@
                 <br>
 
                 <label for="purpose">Select Purpose:</label>
-                <select name="purpose" id="purpose">
+                <select id="purpose"  >
                     <option value=0>--Please Select an Option--</option>
                     <option value="residential">Residential</option>
                     <option value="industrial">Industrial</option>
-                    <option value="commercial">Commercial</option>
+                    <option value="non-residential">Commercial</option>
                 </select>
 
                 <h2>Steel Reinforcement Properties</h2>
                 <form>
                     <label for="rebar-diameter">Rebar Diameter (mm)</label>
-                    <select name="rebar-diameter" id="rebar-diameter">
+                    <select name="rebar-diameter" id="rebar-diameter"  >
                         <option value=0>--Please Select an Option--</option>
                         <option value=10>10</option>
                         <option value=12>12</option>
@@ -110,7 +113,7 @@
 
                 
                 <label for="stirrup">Stirrup Size (mm)</label>
-                <select name="stirrup" id="stirrup">
+                <select name="stirrup" id="stirrup"  >
                     <option value="location">--Please Select an Option--</option>
                     <option value=10>10</option>
                     <option value=12>12</option>
@@ -120,8 +123,8 @@
                 <br>
                 <br>
 
-                <label for="desiredFc">Compressive Strength Fc (MPa)</label>
-                <input type="text" name="desiredFc" id="desiredFc">
+                <label for="desired-fc">Compressive Strength Fc (MPa)</label>
+                <input type="text" name="desired-fc" id="desired-fc"  >
 
                 </div> <!-- input content -->
 
@@ -133,7 +136,7 @@
             </div>
         </div>
     </div>
-
+    <script src="/js/customize_script.js"></script>
 
 </body>
 </html>
