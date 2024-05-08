@@ -7,16 +7,16 @@ const c = canvas.getContext("2d");
 
 c.clearRect(0, 0, canvas.width, canvas.height);
 c.lineWidth = "2";
-console.log(b, D, canvas.width, canvas.height);
+console.log(webDepth, D, canvas.width, canvas.height);
 
 c.beginPath();
 c.rect(40, 40, b, D);
-c.roundRect(conC + 40, conC + 40, b - 2 * conC, D - 2 * conC, [6]);
+c.roundRect(concreteCover + 40, concreteCover + 40, b - 2 * concreteCover, D - 2 * concreteCover, [6]);
 c.roundRect(
-  conC + stirrupValue + 40,
-  conC + stirrupValue + 40,
-  b - 2 * (conC + stirrupValue),
-  D - 2 * (conC + stirrupValue),
+  concreteCover + stirrupValue + 40,
+  concreteCover + stirrupValue + 40,
+  webDepth - 2 * (concreteCover + stirrupValue),
+  D - 2 * (concreteCover + stirrupValue),
   [6]
 );
 c.stroke();
@@ -26,30 +26,30 @@ c.arc(dsc + 40, dsc + 40, rebarValue / 2, 0, 2 * Math.PI);
 c.stroke();
 
 c.beginPath();
-c.arc(b - dsc + 40, dsc + 40, rebarValue / 2, 0, 2 * Math.PI);
+c.arc(webDepth - dsc + 40, dsc + 40, rebarValue / 2, 0, 2 * Math.PI);
 c.stroke();
 
 for (let i = 0; i < nORebars; i++) {
   c.beginPath();
-  const tempCenter = dsc + ((b - 2 * dsc) / (nORebars - 1)) * i;
-  c.arc(tempCenter + 40, eDepth + 40, rebarValue / 2, 0, 2 * Math.PI);
+  const tempCenter = dsc + ((webDepth - 2 * dsc) / (nORebars - 1)) * i;
+  c.arc(tempCenter + 40, effectiveDepth + 40, rebarValue / 2, 0, 2 * Math.PI);
   c.stroke();
 }
 
 c.beginPath();
-c.moveTo(b + 50, 40);
-c.lineTo(b + 70, 40);
-c.moveTo(b + 60, 40);
-c.lineTo(b + 60, eDepth + 40);
-c.moveTo(b + 40 - dsc, eDepth + 40);
-c.lineTo(b + 70, eDepth + 40);
+c.moveTo(webDepth + 50, 40);
+c.lineTo(webDepth + 70, 40);
+c.moveTo(webDepth + 60, 40);
+c.lineTo(webDepth + 60, effectiveDepth + 40);
+c.moveTo(webDepth + 40 - dsc, effectiveDepth + 40);
+c.lineTo(webDepth + 70, effectiveDepth + 40);
 
-c.moveTo(b + 40 - dsc, D + 40 - conC);
-c.lineTo(b + 70, D + 40 - conC);
-c.moveTo(b + 60, D + 40 - conC);
-c.lineTo(b + 60, D + 40);
-c.moveTo(b + 50, D + 40);
-c.lineTo(b + 70, D + 40);
+c.moveTo(webDepth + 40 - dsc, D + 40 - concreteCover);
+c.lineTo(webDepth + 70, D + 40 - concreteCover);
+c.moveTo(webDepth + 60, D + 40 - concreteCover);
+c.lineTo(webDepth + 60, D + 40);
+c.moveTo(webDepth + 50, D + 40);
+c.lineTo(webDepth + 70, D + 40);
 
 c.moveTo(10, 40);
 c.lineTo(30, 40);
@@ -61,8 +61,8 @@ c.lineTo(30, D + 40);
 c.moveTo(40, 10);
 c.lineTo(40, 30);
 c.moveTo(40, 20);
-c.lineTo(b + 40, 20);
-c.moveTo(b + 40, 10);
-c.lineTo(b + 40, 30);
+c.lineTo(webDepth + 40, 20);
+c.moveTo(webDepth + 40, 10);
+c.lineTo(webDepth + 40, 30);
 
 c.stroke();
