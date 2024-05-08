@@ -104,7 +104,8 @@ function calculateEffectiveDepth(crossSectionalDepth, cover, stirrup, rebarDiame
 }
 
 function calculateCrossSectionalArea(crossSectionalDepth, effectiveDepth, Fc, webDepth) {
-    return alphaB * ((crossSectionalDepth / effectiveDepth) ** 2) * (0.6 * (Fc ** 0.5)) / Fsy * webDepth * effectiveDepth;
+    console.log('LOOK HERE HEY HEY HEY ', crossSectionalDepth, effectiveDepth, Fc, webDepth)
+    return 0.2 * ((crossSectionalDepth / effectiveDepth) ** 2) * 0.6 * (Fc ** 0.5) / Fsy * webDepth * effectiveDepth;
 }
 
 function calculateNumberOfBars(Ast, rebar) {
