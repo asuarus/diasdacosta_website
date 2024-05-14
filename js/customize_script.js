@@ -1,7 +1,9 @@
+import * as Math from 'mathjs';
+
 const alphaB = 0.2;
 const Fsy = 500;
 const aspectRatio = 1.5;
-const PI = 3.14159;
+const Es = 200000;
 
 
 const spanBar = document.getElementById('span-length');
@@ -17,6 +19,8 @@ let rebarValue = 16;
 let stirrupValue = 10;
 let Mstar = 3000000;
 let Vstar = 100000;
+let concreteDensity = 25;
+
 locationQues.value = 'none';
 purposeQues.value = 'none';  
 
@@ -91,11 +95,11 @@ function calculateCover(classification) {
     return cover;
 }
 
-function calculateWebWidth(spanLength) {
+function calculateWebDepth(spanLength) {
     return ceil(spanLength / 16); 
 }
 
-function calculateCrossSectionDepth(crossSectionalDepth) {
+function calculateCrossSectionWidth(crossSectionalDepth) {
     return ceil(crossSectionalDepth / aspectRatio); 
 }
 
@@ -103,30 +107,113 @@ function calculateEffectiveDepth(crossSectionalDepth, cover, stirrup, rebarDiame
     return ceil((crossSectionalDepth - cover - stirrup - (rebarDiameter / 2))); 
 }
 
-function calculateCrossSectionalArea(crossSectionalDepth, effectiveDepth, Fc, webDepth) {
-    console.log('LOOK HERE HEY HEY HEY ', crossSectionalDepth, effectiveDepth, Fc, webDepth)
-    return 0.2 * ((crossSectionalDepth / effectiveDepth) ** 2) * 0.6 * (Fc ** 0.5) / Fsy * webDepth * effectiveDepth;
+function calculateCrossSectionalArea(crossSectionalDepth, rebarDiameter, effectiveDepth, Fc, webDepth) {
+    return 0.2 * Math.pow((crossSectionalDepth/rebarDiameter),2) * (0.6*Math.sqrt(Fc)/Fsy) * webDepth * effectiveDepth;
 }
 
-function calculateNumberOfBars(Ast, rebar) {
-    return ceil(Ast / (PI/(4*rebar**2)));
+function calculateNumberOfBars(Ast, rebarDiameter) {
+    return Math.ceil(Ast/((Math.PI)/4*Math.pow(rebarDiameter,2)));
 }
 
 function ceil(num) {
-    test = (num % 10)
-    if (test === 0) {
+    zerotest = (num % 10)
+    if (zerotest === 0) {
         return num;
     } else {
-        return (10 - test) + num;
+        return (10 - zerotest) + num;
     }
 }
+
 
 
 // second part
 
 
+// webDepth and webWidth are converted to meters
+function calculateDeadLoad(webDepth, webWidth , permanentLoad) { 
+    selfWeight = (webDepth/1000) * (webWidth/1000) * (webWidth/1000) * concreteDensity; // extra webWidth converts units to kN/m
+    permanentLoad *= webWidth; // converts units from kPa to kN/m
+    return selfWeight + permanentLoad; 
+} //final answer in kN/m
+
+// calculating bending moment in kN*m
+function calculateBendingMoment(deadLoad, liveLoad, spanLength) {
+    eq1 = 1.3 * deadLoad;
+    eq2 = 1.2 * deadLoad + 1.5 * liveLoad;
 
 
+    // using whichever standard equation is larger 
+    eq1 > eq2 ? (eq1*spanLength*spanLength)/8 : (eq2*spanLength*spanLength)/8;
+}
+
+
+function momentCapacity(Fc, Ast, webWidth, effectiveDepth, D) {
+    Fcprime = 0.6 * math.pow(Fc, 0.5);
+
+    alphatwo = 0.85 - 0.0015*Fcprime;
+    gamma = 0.97 - 0.0025*Fcprime;
+
+
+    Asc = 2*((Math.PI)/4*Math.pow(rebarValue,2));;
+    dsc = D - effectiveDepth; 
+
+    if (alphatwo < 0.67)
+        alphatwo = 0.67;
+    if (gamma < 0.67)
+        gamma = 0.67;
+
+    Tst = Ast * Fsy; // tensile strength in reinforcement ?????
+    Tsc = Asc * Fsy; // tensile strength in compression reinforcement ?????
+
+
+    c = findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst);
+
+    epsilonst = 0.003*(effectiveDepth-c)/c;
+    epsilonsc = 0.003*(c-dsc)/c;
+
+
+    // Assumption Checking 
+    while (epsilonst < 0.0025) {
+        Tst *= epsilonst;
+        c = findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst);
+    }
+    while ((Tsc > 0.0025) && (epsilonsc > 0.0025)) {
+        Tsc *= epsilonsc;
+        c = findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst);
+    }
+
+    
+
+    MuoC = C*(effectiveDepth-gamma*c/2) + Es*epsilonsc*(effectiveDepth-dsc);
+    MuoT = C*(effectiveDepth-gamma*c/2) + Tsc*(effectiveDepth-dsc);
+
+    MuoC > MuoT ? Muo = MuoC : Muo = MuoT;
+
+    kuo = c / effectiveDepth;
+    phi = 1.24 - 13*kuo/12;
+
+    if (phi > 0.85)
+        phi = 0.85;
+    if (phi < 0.65)
+        phi = 0.65;
+
+    return phi*Muo;
+}
+
+function findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst) {
+
+    coeffA = alphatwo*Fc*gamma*webWidth;
+    coeffB = 0.003*Asc*Es-Asc*alphatwo*Fc-Tst;
+    coeffC = -0.003*Asc*Es*dsc;
+
+    c = (-coeffB + Math.sqrt(Math.pow(coeffB,2)-4*coeffA*coeffC))/(2*coeffA);
+
+    if (c < dsc){  
+        c = (-Tst - (Asc*(Es*epsilonsc - alphatwo*Fcprime)))/(alphatwo*Fcprime*gamma*webWidth);
+    }
+
+    return c;
+}
 
 
 //////////////////
@@ -147,11 +234,11 @@ function run() {
     finalCover = calculateCover(concreteClassification);
     console.log('finalCover:', finalCover);
 
-    crossSectionalWidth = calculateWebWidth(spanBar.value);
-    console.log('crossSectionalDepth:', crossSectionalWidth);
+    crossSectionalDepth = calculateWebDepth(spanBar.value);
+    console.log('crossSectionalDepth:', crossSectionalDepth);
 
-    crossSectionalDepth = calculateCrossSectionDepth(crossSectionalWidth);
-    console.log('webDepth:', crossSectionalDepth);
+    crossSectionalWidth = calculateCrossSectionWidth(crossSectionalWidth);
+    console.log('webWidth:', crossSectionalWidth);
 
     effectiveDepth = calculateEffectiveDepth(crossSectionalDepth, finalCover, stirrup.value, rebarDiameter.value);
     console.log('effectiveDepth:', effectiveDepth);
