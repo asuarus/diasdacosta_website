@@ -49,7 +49,7 @@
                 <br> 
                 <div class="input__content">
                 
-                <button type="button" id="run">Run</button>
+                
                 
                 <h2>Purpose</h2>
                 <form>
@@ -116,14 +116,68 @@
                 <br>
 
                 <label for="desired-fc">Compressive Strength Fc (MPa)</label>
-                <input type="text" name="desired-fc" id="desired-fc"  >
+                <input type="text" name="desired-fc" id="desired-fc" value=0 >
 
-                </div> <!-- input content -->
+
+                <h2>Load Properties</h2>
+                <label for="permanent-load">Permanent Load</label>
+                <input type="number" name="permanent-load" id="permanent-load">
+                
+                <br>
+                <br>
+                <br>
+
+                <label for="live-load">Live Load</label>
+                <input type="number" name="live-load" id="live-load" value=0>
+
+                </div> <!-- end of input content -->
+
+                <canvas id="canvasElement"></canvas>
+
+                <br>
+                <br>
+                <button type="button" id="run-button">Run</button>
+                <br>
+
 
                 <div class="result__content">
                 <br> 
-                </div>
+                <h2>Results</h2>
                 
+
+                <label for="areaT">Ast Cross Section Area of Tensile Reinforcement:</label>  
+                <output id="areaT">0</output>
+
+                <br>
+                <br>
+
+                <label for="numRebars">Number of Rebars:</label>  
+                <output id="numRebars">0</output>
+
+                <br>
+                <br>
+
+                <label for="areaC">Asc Cross Section Area of Compressive Reinforcement:</label>  
+                <output id="areaC">0</output>
+
+                <br>
+                <br>
+
+                <label for="design-load">M* Design Load:</label>  
+                <output id="design-load">0</output>
+
+                <br>
+                <br>
+
+                <label for="moment-capacity">øMuo Moment Capacity:</label>  
+                <output id="moment-capacity">0</output>
+
+                <br>
+                <br>
+
+
+
+                </div>
 
             </div>
         </div>
