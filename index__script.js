@@ -1,6 +1,3 @@
-const Fsy = 500;
-const aspectRatio = 1.5;
-const Es = 200000;
 
 const spanHTML = document.getElementById("span-length");
 const locationHTML = document.getElementById("location");
@@ -19,6 +16,9 @@ const liveLoadHTML = document.getElementById("live-load");
 const canvas = document.getElementById("canvasElement");
 
 
+const Fsy = 500;
+const aspectRatio = 1.5;
+const Es = 200000;
 var concreteDensity = 25;
 locationHTML.value = "none";
 purposeHTML.value = "none";
@@ -174,7 +174,6 @@ function calcMomentCapacity(Fc, webWidth, effectiveDepth, cover, rebar, stirrup,
   findc(designLoad, rebar, Fsy, alphatwo, Fcprime, gamma, webWidth, Es, dsc, effectiveDepth);
 }
 
-
 function findc1(rebar, Fcprime, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth){
   const Asc = 2*((Math.PI)/4*Math.pow(rebar,2));
   AscHTML.value = Asc.toPrecision(5);
@@ -235,8 +234,6 @@ function findc(designLoad, rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, e
   }
   count = 0;
 }
-
-
 
 function drawCanvas(webDepth, D, b, concreteCover, stirrupValue, rebarValue, nORebars, effectiveDepth, dsc) {
     

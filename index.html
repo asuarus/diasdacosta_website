@@ -17,26 +17,14 @@
 </head>
 <body>
 
-
     <nav class="navbar">
         <div class="navbar__container">
             <a href="index.html" id="navbar__logo"> 
                 <i class="fas fa-ruler-combined"></i> Beam
             </a>
-
-            <div class="navbar__toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-
-            <ul class="navbar__menu">
-            </ul>
         </div>
     </nav>
-
-
-
+    
     
     <div class="options">
         <div class="options__container">
@@ -52,8 +40,7 @@
                     <label for="fname">Span (mm):</label>
                     <br>
                     <input type="range" min="2000" max="12000" value="3000" class="slider" id="span-length" oninput="this.nextElementSibling.value = this.value">
-                    <output>3000</output>
-                    
+                    <output>3000</output>    
                 </form>
 
                 <br>
@@ -80,6 +67,7 @@
                     <option value="non-residential">Commercial</option>
                 </select>
 
+
                 <h2>Steel Reinforcement Properties</h2>
                 <form>
                     <label for="rebar-diameter">Rebar Diameter (mm)</label>
@@ -99,7 +87,6 @@
                 <br>
                 <br>
 
-                
                 <label for="stirrup">Stirrup Size (mm)</label>
                 <select name="stirrup" id="stirrup"  >
                     <option value="location">--Please Select an Option--</option>
@@ -128,19 +115,18 @@
 
                 </div> <!-- end of input content -->
 
-                <canvas id="canvasElement"></canvas>
+                <br>
+                <br>
 
-                <br>
-                <br>
                 <button type="button" id="run-button">Run</button>
+
                 <br>
 
 
                 <div class="result__content">
                 <br> 
-                <h2>Results</h2>
-                
 
+                <h2>Results</h2>
                 <label for="areaT">Ast Cross Section Area of Tensile Reinforcement:</label>  
                 <output id="areaT">0</output>
 
@@ -171,14 +157,11 @@
                 <br>
                 <br>
 
-
-
+                <canvas id="canvasElement"></canvas>
                 </div>
-
             </div>
         </div>
     </div>
     <script src="customize_script.js"></script>
-
 </body>
 </html>
