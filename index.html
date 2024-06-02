@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beam Simulation</title>
-    <link rel="stylesheet" href="/css/index__styles.css" />
+    <title>Beam Customizer</title>
+    <link rel="stylesheet" href="/customize__styles.css" />
+    <link rel="javascript" href="/customize__script.js" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" 
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/b1a74ee1f1.js" 
         crossorigin="anonymous"></script>
-</head>
 
+        
+</head>
 <body>
-    
+
+
     <nav class="navbar">
         <div class="navbar__container">
-            <a href="index.html" id="navbar__logo"> 
+            <a href="/index.html" id="navbar__logo"> 
                 <i class="fas fa-ruler-combined"></i> Beam
             </a>
 
@@ -26,36 +29,156 @@
                 <span class="bar"></span>
                 <span class="bar"></span>
             </div>
+
+            <ul class="navbar__menu">
+            </ul>
         </div>
     </nav>
 
 
 
-    <div class="main">
-        <div class="main__container">
-            <div class="main__content">
-                <h1>Beam Simulation</h1>
-                <a href="/html/customization.html" class="button">Start</a>
+    
+    <div class="options">
+        <div class="options__container">
+            <div class="options__content">
+                <h1>Beam Customizer</h1>
+                <br> 
+                <div class="input__content">
+                
+                
+                
+                <h2>Purpose</h2>
+                <form>
+                    <label for="fname">Span (mm):</label>
+                    <br>
+                    <input type="range" min="2000" max="12000" value="3000" class="slider" id="span-length" oninput="this.nextElementSibling.value = this.value">
+                    <output>3000</output>
+                    
+                </form>
+
+                <br>
+                <br>
+
+                <label for="location">Select Location:</label>
+                <select id="location" >
+                    <option value="location">--Please Select an Option--</option>
+                    <option value="interior">Interior</option>
+                    <option value="inland">Inland</option>
+                    <option value="near-coastal">Near Coastal</option>
+                    <option value="coastal">Coastal</option>
+                </select>
+
+                <br>
+                <br>
+                <br>
+
+                <label for="purpose">Select Purpose:</label>
+                <select id="purpose"  >
+                    <option value=0>--Please Select an Option--</option>
+                    <option value="residential">Residential</option>
+                    <option value="industrial">Industrial</option>
+                    <option value="non-residential">Commercial</option>
+                </select>
+
+                <h2>Steel Reinforcement Properties</h2>
+                <form>
+                    <label for="rebar-diameter">Rebar Diameter (mm)</label>
+                    <select name="rebar-diameter" id="rebar-diameter"  >
+                        <option value=0>--Please Select an Option--</option>
+                        <option value=10>10</option>
+                        <option value=12>12</option>
+                        <option value=14>14</option>
+                        <option value=16>16</option>
+                        <option value=18>18</option>
+                        <option value=20>20</option>
+                        <option value=22>22</option>
+                        <option value=24>24</option>
+                    </select>
+                </form>
+
+                <br>
+                <br>
+
+                
+                <label for="stirrup">Stirrup Size (mm)</label>
+                <select name="stirrup" id="stirrup"  >
+                    <option value="location">--Please Select an Option--</option>
+                    <option value=10>10</option>
+                    <option value=12>12</option>
+                </select>
+
+                <br>
+                <br>
+                <br>
+
+                <label for="desired-fc">Compressive Strength Fc (MPa)</label>
+                <input type="text" name="desired-fc" id="desired-fc" value=0 >
+
+
+                <h2>Load Properties</h2>
+                <label for="permanent-load">Permanent Load</label>
+                <input type="number" name="permanent-load" id="permanent-load">
+                
+                <br>
+                <br>
+                <br>
+
+                <label for="live-load">Live Load</label>
+                <input type="number" name="live-load" id="live-load" value=0>
+
+                </div> <!-- end of input content -->
+
+                <canvas id="canvasElement"></canvas>
+
+                <br>
+                <br>
+                <button type="button" id="run-button">Run</button>
+                <br>
+
+
+                <div class="result__content">
+                <br> 
+                <h2>Results</h2>
+                
+
+                <label for="areaT">Ast Cross Section Area of Tensile Reinforcement:</label>  
+                <output id="areaT">0</output>
+
+                <br>
+                <br>
+
+                <label for="numRebars">Number of Rebars:</label>  
+                <output id="numRebars">0</output>
+
+                <br>
+                <br>
+
+                <label for="areaC">Asc Cross Section Area of Compressive Reinforcement:</label>  
+                <output id="areaC">0</output>
+
+                <br>
+                <br>
+
+                <label for="design-load">M* Design Load:</label>  
+                <output id="design-load">0</output>
+
+                <br>
+                <br>
+
+                <label for="moment-capacity">øMuo Moment Capacity:</label>  
+                <output id="moment-capacity">0</output>
+
+                <br>
+                <br>
+
+
+
+                </div>
+
             </div>
         </div>
     </div>
-
-
-
-<!-- possible footer??? -->
-    <div class="footer__container">
-        <div class="footer__links">
-            <div class="footer__link--wrapper">
-                <div class="footer__link--items">
-                    <!-- 
-                    <h2>About Us</h2>
-                    <a href="/">How it works</a>
-                    -->
-                </div>
-            </div>
-    </div>
-
-
+    <script src="/customize_script.js"></script>
 
 </body>
 </html>

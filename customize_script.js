@@ -18,10 +18,13 @@ const permLoadHTML = document.getElementById("permanent-load");
 const liveLoadHTML = document.getElementById("live-load");
 const canvas = document.getElementById("canvasElement");
 
-let rebarValue = 16;
-let concreteDensity = 25;
+var rebarValue = 16;
+var concreteDensity = 25;
 locationHTML.value = "none";
 purposeHTML.value = "none";
+var momentCapacity = 0;
+var nofRebars = 0;
+var est = 0;
 
 ///////////////////////////
 ///////////////////////////
@@ -121,7 +124,7 @@ function calculateCrossSectionalArea(
 }
 
 function calculateNumberOfBars(Ast, rebarHTML) {
-  return Math.ceil(Ast / ((Math.PI / 4) * Math.pow(rebarHTML, 2)));
+  nofrebars = Math.ceil(Ast / ((Math.PI / 4) * Math.pow(rebarHTML, 2)));
 }
 
 function ceil(num) {
@@ -154,73 +157,81 @@ function calculateBendingMoment(deadLoad, liveLoad, spanLength) {
     : (eq2 * spanLength * spanLength) / 8);
 }
 
-function calcMomentCapacity(Fc, Ast, webWidth, effectiveDepth, cover, stirrup, rebar, Tst) {
+function calcMomentCapacity(Fc, webWidth, effectiveDepth, cover, stirrup, rebar, designLoad) {
     
   Fcprime = 0.6 * Math.pow(Fc, 0.5);
 
   alphatwo = 0.85 - 0.0015 * Fcprime;
   gamma = 0.97 - 0.0025 * Fcprime;
-
-  Asc = 2 * ((Math.PI / 4) * Math.pow(rebarValue, 2));
+  
   let dsc = Number(cover) + Number(stirrup) + Number(rebar);
 
 
   if (alphatwo < 0.67) alphatwo = 0.67;
   if (gamma < 0.67) gamma = 0.67;
 
-  Tst = Ast * Fsy; // tensile force in reinforcement
-  Csc = Asc * Fsy; // compressive force in compression reinforcement
-
-  c = findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst);
-
-  epsilonst = (0.003 * (effectiveDepth - c)) / c;
-  epsilonsc = (0.003 * (c - dsc)) / c;
-
-  // Assumption Checking
-  while (epsilonst < 0.0025) {
-    Tst *= epsilonst;
-    calcMomentCapacity(Fc, Ast, webWidth, effectiveDepth, cover, stirrup, rebar, Tst);
-  }
-  while (Csc > 0.0025 && epsilonsc > 0.0025) {
-    Csc *= epsilonsc;
-    calcMomentCapacity(Fc, Ast, webWidth, effectiveDepth, cover, stirrup, rebar, Tst);
-  }
-
-  C = alphatwo * Fcprime * webWidth * c * gamma;
-
-  if (c > dsc) {
-    Muo = C * (effectiveDepth - (gamma * c) / 2) + Csc * (effectiveDepth - dsc);
-  } else {
-    Muo =
-      C * (effectiveDepth - (gamma * c) / 2) +
-      Es * epsilonsc * (effectiveDepth - dsc);
-  }
-
-  kuo = c / effectiveDepth;
-  phi = 1.24 - (13 * kuo) / 12;
-
-  if (phi > 0.85) phi = 0.85;
-  if (phi < 0.65) phi = 0.65;
-
-  return phi * Muo;
+  findc1(rebarValue, nofRebars, Fc, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth);
+  findc(designLoad);
 }
 
-function findc(alphatwo, Fc, gamma, webWidth, Asc, Es, dsc, Tst) {
-  coeffA = alphatwo * Fc * gamma * webWidth;
-  coeffB = 0.003 * Asc * Es - Asc * alphatwo * Fc - Tst;
-  coeffC = -0.003 * Asc * Es * dsc;
-  discriminant = coeffB * coeffB - 4 * coeffA * coeffC;
+
+function findc1(rebarValue, nofRebars, Fc, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth){
+  const Asc = 2*((Math.PI)/4*Math.pow(rebarValue,2));
+  AscHTML.value = Asc.toPrecision(5);
+  const Tst = nofRebars * Fsy;
+  const coeffA = alphatwo*Fc*gamma*webWidth;
+  const coeffB = 0.003*Asc*Es-Asc*alphatwo*Fc-Tst;
+  const coeffC = -0.003*Asc*Es*dsc;
+
+  const c = (-coeffB + Math.sqrt(Math.pow(coeffB,2)-4*coeffA*coeffC))/(2*coeffA);
+  est = ((effectiveDepth-c)/c)*0.003;
+  const Csc = Asc*(Es*((c-dsc)/c)*0.003 - alphatwo*Fc);
+  const C = alphatwo*Fc*gamma*c*webWidth;
+
+  const kuo = c/effectiveDepth;
+  Muo = C*(effectiveDepth - 0.5*gamma*c)+Csc*(effectiveDepth-dsc);
+  phi = 1.24-13*kuo/12;
+  if (phi > 0.85) {phi = 0.85;}
+  if (phi < 0.65) {phi = 0.65;}
+
+  momentCapacity = (phi*Muo).toPrecision(9); 
+}
+
+function findc2(rebarValue, nofRebars, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth){
+  const Asc = 2*((Math.PI)/4*Math.pow(rebarValue,2));
+  AscHTML.value = Asc.toPrecision(5);
+  const Tst = nofRebars * Fsy;
+  const coeffA = alphatwo*Fc*gamma*webWidth;
+  const coeffB = 0.003*Asc*Es-Asc*alphatwo*Fc-Tst;
+  const coeffC = -0.003*Asc*Es*dsc;
+
+  const c = (-coeffB + Math.sqrt(Math.pow(coeffB,2)-4*coeffA*coeffC))/(2*coeffA);
+  est = ((effectiveDepth-c)/c)*0.003;
+  const Csc = Asc*(Es*((c-dsc)/c)*0.003 - alphatwo*Fc);
+  const C = alphatwo*Fc*gamma*c*webWidth;
+
+  const kuo = c/effectiveDepth;
+  Muo = C*(effectiveDepth - 0.5*gamma*c)+Csc*(effectiveDepth-dsc);
+  phi = 1.24-13*kuo/12;
+  if (phi > 0.85) {phi = 0.85;}
+  if (phi < 0.65) {phi = 0.65;}
   
-  root1 = (-coeffB + Math.sqrt(discriminant)) / (2 * coeffA);
-  root2 = (-coeffB - Math.sqrt(discriminant)) / (2 * coeffA);
-  root1 > root2 ? c = root1 : c = root2;
-  if (c < dsc) {
-    c =
-      (-Tst - Asc * (Es * epsilonsc - alphatwo * Fcprime)) / (alphatwo * Fcprime * gamma * webWidth);
-  }
- 
-  return c;
+  momentCapacity = (phi*Muo).toPrecision(9);
 }
+
+function findc(designLoad){
+  while (momentCapacity < designLoad){
+      nofRebars += 1;
+      rebarNumHTML.value = nofRebars;
+      findc1();
+  }
+  while (est < 0.0025){
+      findc2();
+      findc();
+  }
+}
+
+
 
 function drawCanvas(webDepth, D, b, concreteCover, stirrupValue, rebarValue, nORebars, effectiveDepth, dsc) {
     
@@ -322,24 +333,24 @@ function run() {
 
   crossSectionalArea = calculateCrossSectionalArea(crossSectionalDepth, Number(rebarHTML.value), effectiveDepth, finalFc, crossSectionalWidth);
   console.log("crossSectionalArea:", crossSectionalArea);
-  AstHTML.innerHTML = crossSectionalArea.toPrecision(5);
+  AstHTML.value = crossSectionalArea.toPrecision(5);
 
-  numberOfBars = calculateNumberOfBars(crossSectionalArea, Number(rebarHTML.value));
-  console.log("numberOfBars:", numberOfBars);
-  rebarNumHTML.innerHTML = numberOfBars.toPrecision(3);
+  calculateNumberOfBars(crossSectionalArea, Number(rebarHTML.value));
+  console.log("numberOfBars:", nofRebars);
+  rebarNumHTML.value = nofRebars.toPrecision(2);
 
   load = calculateDeadLoad(crossSectionalDepth, crossSectionalWidth, Number(permLoadHTML.value));
   console.log("load:", load);
-  loadHTML.innerHTML = load.toPrecision(5);
+  loadHTML.value = load.toPrecision(5);
 
   bendingMoment = calculateBendingMoment(load, Number(liveLoadHTML.value), Number(spanHTML.value));
   console.log("bendingMoment:", bendingMoment);
 
-  momentCapacity = calcMomentCapacity(finalFc, crossSectionalArea, crossSectionalWidth, effectiveDepth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), 0);
+  calcMomentCapacity(finalFc, crossSectionalArea, crossSectionalWidth, effectiveDepth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), 0);
   console.log("momentCapacity:", momentCapacity);
-  momentHTML.innerHTML = momentCapacity.toPrecision(6);
+  momentHTML.value = momentCapacity;
 
-  drawCanvas(crossSectionalDepth, crossSectionalWidth, crossSectionalWidth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), numberOfBars, effectiveDepth, finalCover + Number(stirrupHTML.value) + Number(rebarHTML.value) / 2);
+  drawCanvas(crossSectionalDepth, crossSectionalWidth, crossSectionalWidth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), nofRebars, effectiveDepth, finalCover + Number(stirrupHTML.value) + Number(rebarHTML.value) / 2);
   console.log("DONE");
 }
 
