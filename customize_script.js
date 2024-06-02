@@ -18,7 +18,7 @@ const permLoadHTML = document.getElementById("permanent-load");
 const liveLoadHTML = document.getElementById("live-load");
 const canvas = document.getElementById("canvasElement");
 
-var rebarValue = 16;
+
 var concreteDensity = 25;
 locationHTML.value = "none";
 purposeHTML.value = "none";
@@ -123,8 +123,8 @@ function calculateCrossSectionalArea(
   );
 }
 
-function calculateNumberOfBars(Ast, rebarHTML) {
-  nofrebars = Math.ceil(Ast / ((Math.PI / 4) * Math.pow(rebarHTML, 2)));
+function calculateNumberOfBars(Ast, rebar) {
+  nofRebars = Math.ceil(Ast / ((Math.PI / 4) * Math.pow(rebar, 2)));
 }
 
 function ceil(num) {
@@ -157,7 +157,7 @@ function calculateBendingMoment(deadLoad, liveLoad, spanLength) {
     : (eq2 * spanLength * spanLength) / 8);
 }
 
-function calcMomentCapacity(Fc, webWidth, effectiveDepth, cover, stirrup, rebar, designLoad) {
+function calcMomentCapacity(Fc, webWidth, effectiveDepth, cover, rebar, stirrup, designLoad, Es) {
     
   Fcprime = 0.6 * Math.pow(Fc, 0.5);
 
@@ -170,23 +170,25 @@ function calcMomentCapacity(Fc, webWidth, effectiveDepth, cover, stirrup, rebar,
   if (alphatwo < 0.67) alphatwo = 0.67;
   if (gamma < 0.67) gamma = 0.67;
 
-  findc1(rebarValue, nofRebars, Fc, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth);
-  findc(designLoad);
+  findc1(rebar, Fcprime, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth);
+  findc(designLoad, rebar, Fsy, alphatwo, Fcprime, gamma, webWidth, Es, dsc, effectiveDepth);
 }
 
 
-function findc1(rebarValue, nofRebars, Fc, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth){
-  const Asc = 2*((Math.PI)/4*Math.pow(rebarValue,2));
+function findc1(rebar, Fcprime, gamma, webWidth, alphatwo, Es, dsc, effectiveDepth){
+  const Asc = 2*((Math.PI)/4*Math.pow(rebar,2));
   AscHTML.value = Asc.toPrecision(5);
   const Tst = nofRebars * Fsy;
-  const coeffA = alphatwo*Fc*gamma*webWidth;
-  const coeffB = 0.003*Asc*Es-Asc*alphatwo*Fc-Tst;
+
+  const coeffA = alphatwo*Fcprime*gamma*webWidth;
+  const coeffB = 0.003*Asc*Es-Asc*alphatwo*Fcprime-Tst;
   const coeffC = -0.003*Asc*Es*dsc;
 
   const c = (-coeffB + Math.sqrt(Math.pow(coeffB,2)-4*coeffA*coeffC))/(2*coeffA);
+
   est = ((effectiveDepth-c)/c)*0.003;
-  const Csc = Asc*(Es*((c-dsc)/c)*0.003 - alphatwo*Fc);
-  const C = alphatwo*Fc*gamma*c*webWidth;
+  const Csc = Asc*(Es*((c-dsc)/c)*0.003 - alphatwo*Fcprime);
+  const C = alphatwo*Fcprime*gamma*c*webWidth;
 
   const kuo = c/effectiveDepth;
   Muo = C*(effectiveDepth - 0.5*gamma*c)+Csc*(effectiveDepth-dsc);
@@ -197,8 +199,8 @@ function findc1(rebarValue, nofRebars, Fc, gamma, webWidth, alphatwo, Es, dsc, e
   momentCapacity = (phi*Muo).toPrecision(9); 
 }
 
-function findc2(rebarValue, nofRebars, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth){
-  const Asc = 2*((Math.PI)/4*Math.pow(rebarValue,2));
+function findc2(rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth){
+  const Asc = 2*((Math.PI)/4*Math.pow(rebar,2));
   AscHTML.value = Asc.toPrecision(5);
   const Tst = nofRebars * Fsy;
   const coeffA = alphatwo*Fc*gamma*webWidth;
@@ -206,12 +208,13 @@ function findc2(rebarValue, nofRebars, Fsy, alphatwo, Fc, gamma, webWidth, Es, d
   const coeffC = -0.003*Asc*Es*dsc;
 
   const c = (-coeffB + Math.sqrt(Math.pow(coeffB,2)-4*coeffA*coeffC))/(2*coeffA);
+
   est = ((effectiveDepth-c)/c)*0.003;
   const Csc = Asc*(Es*((c-dsc)/c)*0.003 - alphatwo*Fc);
   const C = alphatwo*Fc*gamma*c*webWidth;
 
   const kuo = c/effectiveDepth;
-  Muo = C*(effectiveDepth - 0.5*gamma*c)+Csc*(effectiveDepth-dsc);
+  Muo = C*(effectiveDepth - 0.5*gamma*c) + Csc*(effectiveDepth-dsc);
   phi = 1.24-13*kuo/12;
   if (phi > 0.85) {phi = 0.85;}
   if (phi < 0.65) {phi = 0.65;}
@@ -219,16 +222,18 @@ function findc2(rebarValue, nofRebars, Fsy, alphatwo, Fc, gamma, webWidth, Es, d
   momentCapacity = (phi*Muo).toPrecision(9);
 }
 
-function findc(designLoad){
+function findc(designLoad, rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth){
+  count = 0;
   while (momentCapacity < designLoad){
       nofRebars += 1;
       rebarNumHTML.value = nofRebars;
-      findc1();
+      findc1(rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth);
   }
   while (est < 0.0025){
-      findc2();
-      findc();
+      findc2(rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth);
+      findc(rebar, Fsy, alphatwo, Fc, gamma, webWidth, Es, dsc, effectiveDepth);
   }
+  count = 0;
 }
 
 
@@ -346,13 +351,16 @@ function run() {
   bendingMoment = calculateBendingMoment(load, Number(liveLoadHTML.value), Number(spanHTML.value));
   console.log("bendingMoment:", bendingMoment);
 
-  calcMomentCapacity(finalFc, crossSectionalArea, crossSectionalWidth, effectiveDepth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), 0);
+  calcMomentCapacity(finalFc, crossSectionalWidth, effectiveDepth, finalCover, Number(rebarNumHTML.value), Number(stirrupHTML.value), bendingMoment, Es);
   console.log("momentCapacity:", momentCapacity);
   momentHTML.value = momentCapacity;
 
   drawCanvas(crossSectionalDepth, crossSectionalWidth, crossSectionalWidth, finalCover, Number(stirrupHTML.value), Number(rebarHTML.value), nofRebars, effectiveDepth, finalCover + Number(stirrupHTML.value) + Number(rebarHTML.value) / 2);
+  rebarNumHTML.value = nofRebars;
   console.log("DONE");
 }
+
+
 
 /////////////////////
 // EVENT LISTENERS //
@@ -369,7 +377,6 @@ if (runButton) {
     run();
   });
 }
-
 
 if (spanHTML) {
   spanHTML.addEventListener("change", function () {
@@ -414,12 +421,6 @@ if (stirrupHTML) {
   });
 }
 
-if (FcHTML) {
-  FcHTML.addEventListener("change", () => {
-    console.log("FcHTML selection:", FcHTML.value);
-    run();
-  });
-}
 
 if (permLoadHTML) {
   permLoadHTML.addEventListener("change", () => {
