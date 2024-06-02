@@ -1,4 +1,4 @@
-# diasdacosta_website
+# Structural mechanic simulation of a concrete beam with steel reinforcements
 
 
 
