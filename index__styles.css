@@ -76,7 +76,6 @@
     transition: all 0.3s ease;
 }
 
-
 .options {
     background-color: #E5BB89;
 }
@@ -90,7 +89,6 @@
     max-width: 1300px;
     background-color: #E5BB89;
 }
-
 
 .options h1 {
     font-size: 3rem;
@@ -121,6 +119,7 @@
     display: inline-block;
     padding: 2rem;
 }
+
 .result__content {
     display: inline-block;
     padding: 2rem;
@@ -167,7 +166,6 @@ select {
     color: white;
     border: thin solid black;
 }
-
 
 .slider {
     position: relative;
