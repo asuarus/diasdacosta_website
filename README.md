@@ -1,4 +1,4 @@
-# Structural mechanic simulation of a concrete beam with steel reinforcements
+# Simulation of a concrete beam with steel reinforcements
 
 
 
